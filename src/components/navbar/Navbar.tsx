@@ -2,7 +2,7 @@ import { FC } from "react";
 import classNames from "classnames";
 import { NavLink } from "react-router-dom";
 
-import classes from "./Navbar.module.scss";
+import classes from "./Navbar.module.scss"
 import "./Navbar.scss";
 
 const Navbar: FC = () => {
