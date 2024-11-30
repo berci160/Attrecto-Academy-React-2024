@@ -19,6 +19,7 @@ const UsersPage = () => {
   const [badges, setBadges] = useState<BadgeModel[]>([]);
 
   const navigate = useNavigate();
+  const [view ,setView] = useState<"card" | "table">("card");
 
   const fetchUsers = useCallback(async () => {
     setUsers(await userService.getUsers());
@@ -45,6 +46,15 @@ const UsersPage = () => {
     fetchUsers();
   };
 
+    const goToCardView=()=>{
+
+      setView("card");
+    };
+    const goToTableView=()=>{
+
+      setView("table");
+    };
+
   return (
     <Page title="Users">
       <div className="row">
@@ -54,6 +64,13 @@ const UsersPage = () => {
           </Button>
         </div>
       </div>
+      <div>
+      <Button onClick={goToCardView}>Card</Button>
+      </div>
+      <div>
+        <Button onClick={goToTableView}>Table</Button>
+      </div>
+      {view === "card" ? (
       <div className="row">
         {users.map((user) => (
           <div className="col-12 col-sm-6 col-md-4 col-lg-3 my-1">
@@ -65,7 +82,40 @@ const UsersPage = () => {
           </div>
         ))}
       </div>
+      ): (
+        <table>
+           <thead>
+            <tr>
+              <th>Name</th>
+              <th>Image</th>
+              <th>Badges</th>
+            </tr>
+            </thead>
+            <tbody>
+            {users.map(({ id, name, image,badges }) => (
+              
+              <tr key={id}>
+               <Link to={`/user/${id}`} >
+                <td>{name}</td>
+                </Link>
+                <td>
+                  <img src={image} alt={`user #${id}`} style={{ width: "50px", height: "50px" }} />
+                </td>
+                <td>
+                  <Button color="danger" onClick={() => handleDeleteUser(id)}>
+                    <FontAwesomeIcon icon={faTrash} /> Delete
+                  </Button>
+                </td>
+               
+                <td></td>
+              </tr>
+             
+            ))}
+            </tbody>
+        </table>
+      )}
     </Page>
+  
   );
 };
 
